@@ -17,6 +17,8 @@ from utils.thumbnail import create_thumbnail
 from utils.videos import save_data
 from utils import settings
 
+from autoupload import MyTikTokBot
+
 import tempfile
 import threading
 import time
@@ -429,3 +431,8 @@ def make_final_video(
     cleanups = cleanup(reddit_id)
     print_substep(f"Removed {cleanups} temporary files 🗑")
     print_step("Done! 🎉 The video is in the results folder 📁")
+    bot = MyTikTokBot()
+    url = 'https://www.tiktok.com/login/phone-or-email/email'
+    bot.execute_steps(url,filename + ".mp4")  
+
+
