@@ -6,6 +6,9 @@ from pathlib import Path
 from subprocess import Popen
 from typing import NoReturn
 
+from tkinter import *
+#from customtkinter import *
+
 from prawcore import ResponseException
 from utils.console import print_substep
 from reddit.subreddit import get_subreddit_threads
@@ -26,23 +29,106 @@ from video_creation.voices import save_text_to_mp3
 from utils.ffmpeg_install import ffmpeg_install
 
 from autoupload import MyTikTokBot
+##UI
+import customtkinter as CTk
+from customtkinter import CTkButton,CTkProgressBar,CTkFrame,CTkLabel
+
+
+class MainForm(CTk):
+    def __init__(self):
+        def __init__(self):
+            super().__init__()
+            #code coipied from tix needs to be adapted
+            self.title("Main") 
+            self.adjust_window_size()
+            self.configure(background="#272537")
+            self.frame = CTkFrame(self)
+            self.frame.pack(pady=20,padx=60,fill="both",expand=True)
+            self.label = CTkLabel(master=self.frame,text="Reddit TikTok Bot")
+            #text_font=("Roboto",24)
+            self.label.pack(pady=12,padx=10)
+
+            #self.style = ttk.Style(self)
+            #set_default_color_theme("dark")
+            
+
+            self.progressBar = CTkProgressBar(master = self.frame)
+            self.progressBar.pack(pady = 12, padx = 10)
+            #might need to set a value
+            #self.mainloop()
+            self.pre_run_checks_button = CTkButton(master = self.frame, text="Check everything is working",command=self.pre_run_checks)
+            self.pre_run_checks_button.pack()
+            self.run_bot_button = CTkButton(master = self.frame, text="Run Bot", command=self.run_bot)
+            self.run_bot_button.pack()
+    def pre_run_checks(self):
+        if sys.version_info.major != 3 or sys.version_info.minor != 10:
+            print("Hey! Congratulations, you've made it so far (which is pretty rare with no Python 3.10). Unfortunately, this program only works on Python 3.10. Please install Python 3.10 and try again.")
+            sys.exit()
+        ffmpeg_install()
+        directory = Path().absolute()
+        config = settings.check_toml(
+            f"{directory}/utils/.config.template.toml", f"{directory}/config.toml"
+        )
+        config is False and sys.exit()
+            
+        if (
+            not settings.config["settings"]["tts"]["tiktok_sessionid"]
+            or settings.config["settings"]["tts"]["tiktok_sessionid"] == ""
+        ) and config["settings"]["tts"]["voice_choice"] == "tiktok":
+            print_substep(
+                "TikTok voice requires a sessionid! Check our documentation on how to obtain one.",
+                "bold red",
+            )
+            sys.exit()
+        try:
+            if config["reddit"]["thread"]["post_id"]:
+                for index, post_id in enumerate(
+                    config["reddit"]["thread"]["post_id"].split("+")
+                ):
+                    index += 1
+                    print_step(
+                        f'on the {index}{("st" if index % 10 == 1 else ("nd" if index % 10 == 2 else ("rd" if index % 10 == 3 else "th")))} post of {len(config["reddit"]["thread"]["post_id"].split("+"))}'
+                    )
+                    main(post_id)
+                    Popen("cls" if name == "nt" else "clear", shell=True).wait()
+            elif config["settings"]["times_to_run"]:
+                run_many(config["settings"]["times_to_run"])
+            else:
+                main()
+        except KeyboardInterrupt:
+            shutdown()
+        except ResponseException:
+            print_markdown("## Invalid credentials")
+            print_markdown("Please check your credentials in the config.toml file")
+            shutdown()
+        except Exception as err:
+            config["settings"]["tts"]["tiktok_sessionid"] = "REDACTED"
+            config["settings"]["tts"]["elevenlabs_api_key"] = "REDACTED"
+            print_step(
+                f"Sorry, something went wrong with this version! Try again, and feel free to report this issue at GitHub or the Discord community.\n"
+                f"Version: {__VERSION__} \n"
+                f"Error: {err} \n"
+                f'Config: {config["settings"]}'
+            )
+            raise err
+    def adjust_window_size(self):
+        ###TEMPP
+        fullscreenvar = "off"
+        if fullscreenvar=="on":
+            self.attributes("-fullscreen", True)
+        else:
+            screen_width = self.winfo_screenwidth()
+            screen_height = self.winfo_screenheight()
+            window_width = int(screen_width * 0.8)  # Adjust the window width as needed
+            window_height = int(screen_height * 0.6)  # Adjust the window height as needed
+            self.geometry(f"{window_width}x{window_height}")
+    def run_bot(self):
+        bot = MyTikTokBot()
+        url = 'https://www.tiktok.com/login/phone-or-email/email'
+        bot.execute_steps(url)  
 
 __VERSION__ = "3.2"
 
-print(
-    """
-██████╗ ███████╗██████╗ ██████╗ ██╗████████╗    ██╗   ██╗██╗██████╗ ███████╗ ██████╗     ███╗   ███╗ █████╗ ██╗  ██╗███████╗██████╗
-██╔══██╗██╔════╝██╔══██╗██╔══██╗██║╚══██╔══╝    ██║   ██║██║██╔══██╗██╔════╝██╔═══██╗    ████╗ ████║██╔══██╗██║ ██╔╝██╔════╝██╔══██╗
-██████╔╝█████╗  ██║  ██║██║  ██║██║   ██║       ██║   ██║██║██║  ██║█████╗  ██║   ██║    ██╔████╔██║███████║█████╔╝ █████╗  ██████╔╝
-██╔══██╗██╔══╝  ██║  ██║██║  ██║██║   ██║       ╚██╗ ██╔╝██║██║  ██║██╔══╝  ██║   ██║    ██║╚██╔╝██║██╔══██║██╔═██╗ ██╔══╝  ██╔══██╗
-██║  ██║███████╗██████╔╝██████╔╝██║   ██║        ╚████╔╝ ██║██████╔╝███████╗╚██████╔╝    ██║ ╚═╝ ██║██║  ██║██║  ██╗███████╗██║  ██║
-╚═╝  ╚═╝╚══════╝╚═════╝ ╚═════╝ ╚═╝   ╚═╝         ╚═══╝  ╚═╝╚═════╝ ╚══════╝ ╚═════╝     ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
-"""
-)
-# Modified by JasonLovesDoggo
-print_markdown(
-    "### Thanks for using this tool! Feel free to contribute to this project on GitHub! If you have any questions, feel free to join my Discord server or submit a GitHub issue. You can find solutions to many common problems in the documentation: https://reddit-video-maker-bot.netlify.app/"
-)
 checkversion(__VERSION__)
 
 
@@ -82,53 +168,5 @@ def shutdown() -> NoReturn:
 
 
 if __name__ == "__main__":
-    if sys.version_info.major != 3 or sys.version_info.minor != 10:
-        print("Hey! Congratulations, you've made it so far (which is pretty rare with no Python 3.10). Unfortunately, this program only works on Python 3.10. Please install Python 3.10 and try again.")
-        sys.exit()
-    ffmpeg_install()
-    directory = Path().absolute()
-    config = settings.check_toml(
-        f"{directory}/utils/.config.template.toml", f"{directory}/config.toml"
-    )
-    config is False and sys.exit()
-        
-    if (
-        not settings.config["settings"]["tts"]["tiktok_sessionid"]
-        or settings.config["settings"]["tts"]["tiktok_sessionid"] == ""
-    ) and config["settings"]["tts"]["voice_choice"] == "tiktok":
-        print_substep(
-            "TikTok voice requires a sessionid! Check our documentation on how to obtain one.",
-            "bold red",
-        )
-        sys.exit()
-    try:
-        if config["reddit"]["thread"]["post_id"]:
-            for index, post_id in enumerate(
-                config["reddit"]["thread"]["post_id"].split("+")
-            ):
-                index += 1
-                print_step(
-                    f'on the {index}{("st" if index % 10 == 1 else ("nd" if index % 10 == 2 else ("rd" if index % 10 == 3 else "th")))} post of {len(config["reddit"]["thread"]["post_id"].split("+"))}'
-                )
-                main(post_id)
-                Popen("cls" if name == "nt" else "clear", shell=True).wait()
-        elif config["settings"]["times_to_run"]:
-            run_many(config["settings"]["times_to_run"])
-        else:
-            main()
-    except KeyboardInterrupt:
-        shutdown()
-    except ResponseException:
-        print_markdown("## Invalid credentials")
-        print_markdown("Please check your credentials in the config.toml file")
-        shutdown()
-    except Exception as err:
-        config["settings"]["tts"]["tiktok_sessionid"] = "REDACTED"
-        config["settings"]["tts"]["elevenlabs_api_key"] = "REDACTED"
-        print_step(
-            f"Sorry, something went wrong with this version! Try again, and feel free to report this issue at GitHub or the Discord community.\n"
-            f"Version: {__VERSION__} \n"
-            f"Error: {err} \n"
-            f'Config: {config["settings"]}'
-        )
-        raise err
+    main_form = MainForm()
+    main_form.mainloop()
