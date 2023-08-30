@@ -28,38 +28,37 @@ from video_creation.screenshot_downloader import get_screenshots_of_reddit_posts
 from video_creation.voices import save_text_to_mp3
 from utils.ffmpeg_install import ffmpeg_install
 
-from autoupload import MyTikTokBot
+from MyTikTokBot import MyTikTokBot
 ##UI
 import customtkinter as CTk
-from customtkinter import CTkButton,CTkProgressBar,CTkFrame,CTkLabel
+from customtkinter import *
 
 
-class MainForm(CTk):
+class MainForm(Toplevel):
     def __init__(self):
-        def __init__(self):
-            super().__init__()
-            #code coipied from tix needs to be adapted
-            self.title("Main") 
-            self.adjust_window_size()
-            self.configure(background="#272537")
-            self.frame = CTkFrame(self)
-            self.frame.pack(pady=20,padx=60,fill="both",expand=True)
-            self.label = CTkLabel(master=self.frame,text="Reddit TikTok Bot")
-            #text_font=("Roboto",24)
-            self.label.pack(pady=12,padx=10)
-
-            #self.style = ttk.Style(self)
-            #set_default_color_theme("dark")
+        
+        super().__init__()
+        #code coipied from tix needs to be adapted
+        self.title("Main") 
+        self.adjust_window_size()
+        self.configure(background="#272537")
+        self.frame = CTkFrame(self)
+        self.frame.pack(pady=20,padx=60,fill="both",expand=True)
+        self.label = CTkLabel(master=self.frame,text="Reddit TikTok Bot")
+        #text_font=("Roboto",24)
+        self.label.pack(pady=12,padx=10)
+        #self.style = ttk.Style(self)
+        #set_default_color_theme("dark")
             
 
-            self.progressBar = CTkProgressBar(master = self.frame)
-            self.progressBar.pack(pady = 12, padx = 10)
-            #might need to set a value
-            #self.mainloop()
-            self.pre_run_checks_button = CTkButton(master = self.frame, text="Check everything is working",command=self.pre_run_checks)
-            self.pre_run_checks_button.pack()
-            self.run_bot_button = CTkButton(master = self.frame, text="Run Bot", command=self.run_bot)
-            self.run_bot_button.pack()
+        self.progressBar = CTkProgressBar(master = self.frame)
+        self.progressBar.pack(pady = 12, padx = 10)
+        #might need to set a value
+        #self.mainloop()
+        self.pre_run_checks_button = CTkButton(master = self.frame, text="Check everything is working",command=self.pre_run_checks)
+        self.pre_run_checks_button.pack()
+        self.run_bot_button = CTkButton(master = self.frame, text="Run Bot", command=self.run_bot)
+        self.run_bot_button.pack()
     def pre_run_checks(self):
         if sys.version_info.major != 3 or sys.version_info.minor != 10:
             print("Hey! Congratulations, you've made it so far (which is pretty rare with no Python 3.10). Unfortunately, this program only works on Python 3.10. Please install Python 3.10 and try again.")

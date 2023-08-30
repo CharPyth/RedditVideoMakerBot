@@ -17,7 +17,7 @@ from utils.thumbnail import create_thumbnail
 from utils.videos import save_data
 from utils import settings
 
-from autoupload import MyTikTokBot
+from MyTikTokBot import MyTikTokBot
 
 import tempfile
 import threading
