@@ -126,7 +126,7 @@ class MainForm(Toplevel):
         url = 'https://www.tiktok.com/login/phone-or-email/email'
         bot.execute_steps(url)  
 
-__VERSION__ = "3.2"
+__VERSION__ = "3.2.1"
 
 checkversion(__VERSION__)
 
