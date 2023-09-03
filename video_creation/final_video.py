@@ -17,13 +17,14 @@ from utils.thumbnail import create_thumbnail
 from utils.videos import save_data
 from utils import settings
 
-from MyTikTokBot import MyTikTokBot
+
 
 import tempfile
 import threading
 import time
-
+from tiktok_uploader.upload import upload_video
 console = Console()
+
 
 
 class ProgressFfmpeg(threading.Thread):
@@ -404,8 +405,21 @@ def make_final_video(
     cleanups = cleanup(reddit_id)
     print_substep(f"Removed {cleanups} temporary files 🗑")
     print_step("Done! 🎉 The video is in the results folder 📁")
-    bot = MyTikTokBot()
     url = 'https://www.tiktok.com/login/phone-or-email/email'
-    bot.execute_steps(url,filename + ".mp4")  
+    BROWSERS = [
+        'chrome',
+        'safari',
+        'chromium',
+        'edge',
+        'firefox'
+        ]
+    #browser=choice(BROWSERS)
+    directory_prefix = "C:\\Users\\chart\\OneDrive\\Desktop\\Python exceld\\RedditVideoMakerBot\\results\\"
+    completedfile = os.path.join(directory_prefix,f"{subreddit}\\{filename}.mp4")
+    if(background_config['video'][2]=="Aki"|background_config['video'][2]=="bbswitzer"):##add credits in 2nd of list
+        upload_video(completedfile,description="Don't forget to comment your opinion!",cookies='cookiesa.txt',browser = 'chrome') 
+    else:
+        upload_video(completedfile,description=f"Background by {background_config['video'][2]} Don't forget to comment your opinion!",cookies='cookiesa.txt',browser = 'chrome') 
+  
 
 

@@ -23,6 +23,7 @@ def load_background_options():
         background_options["audio"] = json.load(json_file)
 
     # Remove "__comment" from backgrounds
+    
     del background_options["video"]["__comment"]
     del background_options["audio"]["__comment"]
 
@@ -113,8 +114,8 @@ def download_background_audio(background_config: Tuple[str, str, str]):
         "extract_audio": True,
     }
 
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([uri])
+    #with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        #ydl.download([uri])
 
     print_substep("Background audio downloaded successfully! 🎉", style="bold green")
 
