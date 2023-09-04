@@ -416,10 +416,10 @@ def make_final_video(
     #browser=choice(BROWSERS)
     directory_prefix = "C:\\Users\\chart\\OneDrive\\Desktop\\Python exceld\\RedditVideoMakerBot\\results\\"
     completedfile = os.path.join(directory_prefix,f"{subreddit}\\{filename}.mp4")
-    if(background_config['video'][2]=="Aki"|background_config['video'][2]=="bbswitzer"):##add credits in 2nd of list
-        upload_video(completedfile,description="Don't forget to comment your opinion!",cookies='cookiesa.txt',browser = 'chrome') 
-    else:
-        upload_video(completedfile,description=f"Background by {background_config['video'][2]} Don't forget to comment your opinion!",cookies='cookiesa.txt',browser = 'chrome') 
+    #if(background_config['video'][2]=="Aki"|background_config['video'][2]=="bbswitzer"):##add credits in 2nd of list
+    #upload_video(completedfile,description="Don't forget to comment your opinion!",cookies='cookiesa.txt',browser = 'chrome') 
+    #else:
+    upload_video(completedfile,description=f"Don't forget to comment your opinion! Background by {background_config['video'][2]}",cookies='cookiesa.txt',browser = 'chrome') 
   
 
 

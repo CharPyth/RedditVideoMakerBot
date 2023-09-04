@@ -86,11 +86,11 @@ def get_subreddit_undone(submissions: list, subreddit, times_checked=0, similari
     return get_subreddit_undone(
         subreddit.top(
             time_filter=VALID_TIME_FILTERS[index],
-            limit=(50 if int(index) == 0 else index + 1 * 50),
+            limit=(200 if int(index) == 0 else index + 1 * 200),
         ),
         subreddit,
         times_checked=index,
-    )  # all the videos in hot have already been done
+    )  # all the videos in hot have already been done#increased to 200
 
 
 def already_done(done_videos: list, submission) -> bool:

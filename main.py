@@ -66,7 +66,7 @@ class MainForm(Toplevel):
         ffmpeg_install()
         directory = Path().absolute()
         config = settings.check_toml(
-            f"{directory}/utils/.config.template.toml", f"{directory}/config.toml"
+            f"{directory}\\utils\\.config.template.toml", f"{directory}\\config.toml"
         )
         config is False and sys.exit()
             
@@ -179,7 +179,7 @@ if __name__ == "__main__":
         ffmpeg_install()
         directory = Path().absolute()
         config = settings.check_toml(
-                f"{directory}/utils/.config.template.toml", f"{directory}/config.toml"
+                f"{directory}\\utils\\.config.template.toml", f"{directory}\\config.toml"
             )
         config is False and sys.exit()
                 

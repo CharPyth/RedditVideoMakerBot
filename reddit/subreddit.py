@@ -129,7 +129,9 @@ def get_subreddit_threads(POST_ID: str):
             content["thread_post"] = posttextparser(submission.selftext)
         else:
             content["thread_post"] = submission.selftext
+            
     else:
+        content["thread_post"] = submission.selftext
         for top_level_comment in submission.comments:
             if isinstance(top_level_comment, MoreComments):
                 continue
