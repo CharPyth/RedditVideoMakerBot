@@ -1,4 +1,5 @@
 [
+    
     {
         "subreddit": "AmItheAsshole",
         "id": "167f1jx",
@@ -47,10 +48,11 @@
         "reddit_title": "AITA for refusing to let my sister wear our late moms necklace on her wedding day",
         "filename": "AITA for refusing to let my sister wear our late moms necklace on her wedding day.mp4"
     },
+    
     {
         "subreddit": "AmItheAsshole",
         "id": "167a8kx",
-        "time": "1693649254",
+        "time":"1693649254",
         "background_credit": "Aki",
         "reddit_title": "AITA for not wanting to help my SO with our twins",
         "filename": "AITA for not wanting to help my SO with our twins.mp4"
@@ -202,7 +204,6 @@
     {
         "subreddit": "AmItheAsshole",
         "id": "169hkb0",
-        "time": "1693829312",
         "background_credit": "bbswitzer",
         "reddit_title": "AITA for refusing to pay for my brothers wedding after he banned our elderly grandma from attending",
         "filename": "AITA for refusing to pay for my brothers wedding after he banned our elderly grandma from attending.mp4"
